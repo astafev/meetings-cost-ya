@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "name": "HowMuchIsTheFish!",
+    "version": "1.0",
+    "description": "Calculate.",
+    "icons": {
+        "48": "icons/border-48.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://calendar.yandex-team.ru/*"
+            ],
+            "js": [
+                "main.js",
+                "active-popup.js"
+            ]
+        }
+    ]
+}
