@@ -1,5 +1,13 @@
 const settings = {
-    "currency": "часов",
+    "currency": "час",
+    "currency_forms": {
+        // 1
+        "form_1": "час",
+        // 2, 3, 4
+        "form_2": "часа",
+        // 5, 6, 7, 8, 9, 0
+        "form_3": "часов"
+    },
     "wage": 1,
     "currencyFirst": false,
     "costLabel": "Потрачено",
@@ -52,10 +60,32 @@ class Popup {
     __writeCost() {
         const cost = this.__getNumOfParticipants() * settings.wage * this.__calculateDuration()
         if (settings.currencyFirst) {
-            return `${this.settings.currency} ${cost}`
+            return `${this.__getCurrencyWord(cost)} ${cost}`
         } else {
-            return `${cost} ${this.settings.currency}`
+            return `${cost} ${this.__getCurrencyWord(cost)}`
         }
+    }
+
+    /** @param {number} cost */
+    __getCurrencyWord(cost) {
+        if (!this.settings.currency_forms) {
+            return this.settings.currency
+        }
+        const forms = this.settings.currency_forms
+        let correctForm
+        switch(`${cost}`.substr(-1)) {
+            case '1':
+                correctForm = forms.form_1
+                break
+            case '2':
+            case '3':
+            case '4':
+                correctForm = forms.form_2
+                break
+            default:
+                correctForm = forms.form_3
+        }
+        return correctForm || this.settings.currency
     }
 
     /** @param {Node} node clone of the bottom line */
@@ -71,9 +101,13 @@ class Popup {
 
     showCost() {
         /** @const {Node} */
-        const lastRow = this.root.querySelector('div[class^=EventFormField__wrap]:last-of-type')
-        const cloned = this.__enrichNode(lastRow.cloneNode(true, true))
-        lastRow.parentNode.append(cloned)
+        try {
+          const lastRow = this.root.querySelector('div[class^=EventFormField__wrap]:last-of-type')
+          const cloned = this.__enrichNode(lastRow.cloneNode(true, true))
+          lastRow.parentNode.append(cloned)
+        } catch (e) {
+            console.log('Error showing the cost:', e)
+        }
     }
 
     doTheStuff() {
