@@ -12,7 +12,7 @@
     "permissions": ["storage"],
     "browser_specific_settings": {
         "gecko": {
-          "id": "addon@example.com"
+          "id": "astafev.evgeny@gmail.com"
         }
     },
     "content_scripts": [
@@ -21,6 +21,7 @@
                 "https://calendar.yandex-team.ru/*"
             ],
             "js": [
+                "settings.js",
                 "active-popup.js",
                 "room-checker.js",
                 "main.js"

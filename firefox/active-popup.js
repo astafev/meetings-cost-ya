@@ -1,22 +1,8 @@
-const settings = {
-    "currency": "час",
-    "currency_forms": {
-        // 1
-        "form_1": "час",
-        // 2, 3, 4
-        "form_2": "часа",
-        // 5, 6, 7, 8, 9, 0
-        "form_3": "часов"
-    },
-    "wage": 1,
-    "currencyFirst": false,
-    "costLabel": "Потрачено",
-}
-
 class Popup {
-    constructor(root) {
+    constructor(root, settings) {
         this.root = root
         this.settings = settings
+        console.log(settings)
     }
 
     __findParticipants() {
@@ -68,22 +54,18 @@ class Popup {
 
     /** @param {number} cost */
     __getCurrencyWord(cost) {
-        if (!this.settings.currency_forms) {
-            return this.settings.currency
-        }
-        const forms = this.settings.currency_forms
         let correctForm
         switch(`${cost}`.substr(-1)) {
             case '1':
-                correctForm = forms.form_1
+                correctForm = this.settings.currency_form_1
                 break
             case '2':
             case '3':
             case '4':
-                correctForm = forms.form_2
+                correctForm = this.settings.currency_form_2
                 break
             default:
-                correctForm = forms.form_3
+                correctForm = this.settings.currency_form_3
         }
         return correctForm || this.settings.currency
     }

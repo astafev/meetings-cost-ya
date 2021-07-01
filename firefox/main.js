@@ -1,5 +1,10 @@
 document.body.style.border = "5px solid red";
 
+var settings = propertiesConfig.reduce((obj, prop)=>{
+    obj[prop.id] = prop.default
+    return obj;
+}, {})
+
 /**
  * @param {MutationRecord[]} mutationRecords
 */
@@ -10,11 +15,17 @@ function callback(mutationRecords) {
             && record.addedNodes[0].getElementsByClassName('qa-EventFormPreview').length
     })
     if (result) {
-        new Popup(result.addedNodes[0]).doTheStuff();
+        console.log(settings)
+        new Popup(result.addedNodes[0], settings).doTheStuff();
     }
 
     // TODO clean up?
 }
 
-new MutationObserver(callback)
-    .observe(document.documentElement, {subtree: true, childList: true})
+browser.storage.sync.get(null).then(flatSettings => {
+    if  (flatSettings.currency) {
+        settings = flatSettings
+    }
+    console.log(settings)
+    new MutationObserver(callback).observe(document.documentElement, {subtree: true, childList: true})
+});
