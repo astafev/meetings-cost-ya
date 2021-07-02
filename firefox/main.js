@@ -29,4 +29,9 @@ browser.storage.sync.get(null).then(flatSettings => {
     // console.log(settings)
     new MutationObserver(callback).observe(document.documentElement, {subtree: true, childList: true})
 });
-console.log(browser.webRequest)
+console.log('hello')
+browser.storage.onChanged.addListener(changeData => {
+    console.log("new schedule:", changeData['schedule']?.newValue)
+    // TODO multiple events requests, need smart filtering and cleaning up
+    console.log("new events:", changeData['events']?.newValue)
+});

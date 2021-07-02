@@ -12,10 +12,11 @@
     "permissions": [
         "storage",
         "webRequest",
+        "webRequestBlocking",
         "https://calendar.yandex-team.ru/*"
     ],
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["background/background.js"]
     },
     "browser_specific_settings": {
         "gecko": {
