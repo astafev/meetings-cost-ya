@@ -26,6 +26,7 @@ browser.storage.sync.get(null).then(flatSettings => {
     if  (flatSettings.currency) {
         settings = flatSettings
     }
-    console.log(settings)
+    // console.log(settings)
     new MutationObserver(callback).observe(document.documentElement, {subtree: true, childList: true})
 });
+console.log(browser.webRequest)

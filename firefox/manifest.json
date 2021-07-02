@@ -7,9 +7,16 @@
         "48": "icons/border-48.png"
     },
     "options_ui": {
-        "page": "options.html"
+        "page": "settings-page/options.html"
     },
-    "permissions": ["storage"],
+    "permissions": [
+        "storage",
+        "webRequest",
+        "https://calendar.yandex-team.ru/*"
+    ],
+    "background": {
+        "scripts": ["background.js"]
+    },
     "browser_specific_settings": {
         "gecko": {
           "id": "astafev.evgeny@gmail.com"
