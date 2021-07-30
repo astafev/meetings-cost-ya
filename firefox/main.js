@@ -1,4 +1,4 @@
-document.body.style.border = "5px solid red";
+//document.body.style.border = "5px solid red";
 
 let _events = {}
 let _schedules = []
@@ -42,6 +42,7 @@ browser.storage.onChanged.addListener(changeData => {
 });
 
 function newSchedules(schedules) {
+    return
     if (!schedules) {
         return
     }
@@ -51,6 +52,7 @@ function newSchedules(schedules) {
 
 /** @param {Record<string, any>[]} events */
 function newEvents(events) {
+    return
     if (!events) {
         return
     }

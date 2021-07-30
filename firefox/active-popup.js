@@ -44,7 +44,7 @@ class Popup {
     }
 
     __writeCost() {
-        const cost = this.__getNumOfParticipants() * settings.wage * this.__calculateDuration()
+        const cost = (this.__getNumOfParticipants() * settings.wage * this.__calculateDuration()).toLocaleString()
         if (settings.currencyFirst) {
             return `${this.__getCurrencyWord(cost)} ${cost}`
         } else {
