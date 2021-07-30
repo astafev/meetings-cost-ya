@@ -28,6 +28,7 @@ function logResponse(details) {
   return {};
 }
 
+if(false)
 browser.webRequest.onBeforeRequest.addListener(
     logResponse,
     {urls: [

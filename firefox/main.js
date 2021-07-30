@@ -1,5 +1,8 @@
 document.body.style.border = "5px solid red";
 
+let _events = {}
+let _schedules = []
+
 var settings = propertiesConfig.reduce((obj, prop)=>{
     obj[prop.id] = prop.default
     return obj;
@@ -29,9 +32,31 @@ browser.storage.sync.get(null).then(flatSettings => {
     // console.log(settings)
     new MutationObserver(callback).observe(document.documentElement, {subtree: true, childList: true})
 });
-console.log('hello')
+
+browser.storage.local.remove('schedule')
+browser.storage.local.remove('events')
 browser.storage.onChanged.addListener(changeData => {
-    console.log("new schedule:", changeData['schedule']?.newValue)
-    // TODO multiple events requests, need smart filtering and cleaning up
-    console.log("new events:", changeData['events']?.newValue)
+    newSchedules(changeData['schedule']?.newValue.models[0]?.data?.intervals)
+    
+    newEvents(changeData['events']?.newValue.models[0]?.data?.events)
 });
+
+function newSchedules(schedules) {
+    if (!schedules) {
+        return
+    }
+    _schedules = schedules
+    console.log(_schedules)
+}
+
+/** @param {Record<string, any>[]} events */
+function newEvents(events) {
+    if (!events) {
+        return
+    }
+    // TODO multiple events requests, need smart filtering and cleaning up
+    events.forEach(event => {
+        _events[event.id] = event
+    })
+    console.log(_events)
+}
