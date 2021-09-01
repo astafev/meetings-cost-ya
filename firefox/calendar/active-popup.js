@@ -6,7 +6,6 @@ class Popup {
     constructor(root, settings) {
         this.root = root
         this.settings = settings
-        console.log(settings)
     }
 
     __findParticipants() {
@@ -38,7 +37,7 @@ class Popup {
     }
 
     __calculateDuration() {
-        const dateNode = this.root.querySelector('div[class^=EventDatesField__value--')
+        const dateNode = this.root.queryByClass('EventDatesField__value')
         const parsed = /.*, (\d{1,2}):(\d{1,2}) . (\d{1,2}):(\d{1,2})$/.exec(dateNode.textContent)
         if (!parsed) {
             throw "can't parse duration :( " + dateNode.textContent

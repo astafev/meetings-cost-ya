@@ -1,8 +1,4 @@
 const watchCalendarPage = (settings) => {
-    function watch() {
-        new MutationObserver(calendarPageObserver).observe(document.documentElement, { subtree: true, childList: true })
-    }
-
     /**
      * @param {MutationRecord[]} mutationRecords
     */
@@ -18,5 +14,7 @@ const watchCalendarPage = (settings) => {
 
     }
 
-    return watch();
+    if (document.URL.includes('/week')) {
+        new MutationObserver(calendarPageObserver).observe(document.documentElement, { subtree: true, childList: true })
+    }
 }

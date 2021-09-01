@@ -1,6 +1,21 @@
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/filterResponseData 
 
+
+
+
 function logResponse(details) {
+  function processEventsResponse(parsed) {
+    // browser.storage.local.set({"events": parsed})
+  }
+  function processScheduleResponse(parsed) {
+    const model = parsed?.models[0];
+    if(model && model.name === 'get-resources-schedule' && model.status === 'ok') {
+      console.log(model.data)
+      browser.storage.local.set({"schedule": model.data})
+    }
+  }
+  
+
   const filter = browser.webRequest.filterResponseData(details.requestId);
   const decoder = new TextDecoder("utf-8");
   const encoder = new TextEncoder();
@@ -16,9 +31,9 @@ function logResponse(details) {
         console.log(content)
         let parsed = JSON.parse(content)
         if (details.url.endsWith('get-events')) {
-          browser.storage.local.set({"events": parsed})
+          processEventsResponse(parsed);
         } else {
-          browser.storage.local.set({"schedule": parsed})
+          processScheduleResponse(parsed);
         }
       } finally {
         filter.disconnect()
@@ -28,12 +43,12 @@ function logResponse(details) {
   return {};
 }
 
-if(false)
 browser.webRequest.onBeforeRequest.addListener(
     logResponse,
     {urls: [
         // events on main calendar page
         "https://calendar.yandex-team.ru/api/models?_models=get-events",
+        "https://calendar.yandex.ru/api/models?_models=get-events",
         // events on /invite page (переговорки)
         "https://calendar.yandex-team.ru/api/models?_models=get-resources-schedule",
     ]},

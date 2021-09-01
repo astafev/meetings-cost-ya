@@ -11,5 +11,5 @@ We need the following permissions:
 ```
 
 * `storage` to keep settings
-* *the rest* for intercepting web queries (maybe something from that list is not necessary, copied from examples)
+* *the rest* is for intercepting web queries (maybe something from that list is not necessary, copied from examples)
 

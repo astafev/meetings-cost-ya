@@ -48,3 +48,10 @@ function newEvents(events) {
     })
     console.log(_events)
 }
+
+Node.prototype.queryByClass = function(className) {
+    return this.querySelector('div[class^=' + className + '--]')
+}
+Node.prototype.queryByClassAll = function(className) {
+    return this.querySelectorAll('div[class^=' + className + '--]')
+}
