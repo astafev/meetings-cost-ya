@@ -1,13 +1,13 @@
 {
     "manifest_version": 2,
-    "name": "HowMuchIsTheFish!",
+    "name": "MeetingCost_Yandex_Calendar",
     "version": "1.0",
-    "description": "Calculate.",
+    "description": "Calculate cost of meetings in yandex calendar.",
     "icons": {
         "48": "icons/border-48.png"
     },
     "options_ui": {
-        "page": "settings-page/options.html"
+        "page": "settings/options-page/options.html"
     },
     "permissions": [
         "storage",
@@ -16,7 +16,7 @@
         "https://calendar.yandex-team.ru/*"
     ],
     "background": {
-        "scripts": ["background/background.js"]
+        "scripts": ["rooms/background.js"]
     },
     "browser_specific_settings": {
         "gecko": {
@@ -26,12 +26,17 @@
     "content_scripts": [
         {
             "matches": [
-                "https://calendar.yandex-team.ru/*"
+                "https://calendar.yandex-team.ru/*",
+                "https://calendar.yandex.ru/*"
             ],
             "js": [
-                "settings.js",
-                "active-popup.js",
-                "room-checker.js",
+                "settings/settings.js",
+
+                "calendar/active-popup.js",
+                "calendar/watch.js",
+
+                "rooms/parse-html.js",
+
                 "main.js"
             ]
         }

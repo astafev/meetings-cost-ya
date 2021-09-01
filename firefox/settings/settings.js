@@ -28,3 +28,8 @@ const propertiesConfig = [
       default: 'Потрачено'
     },
   ]
+
+
+function readSettings() {
+    return browser.storage.sync.get(null);
+}

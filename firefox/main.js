@@ -1,4 +1,4 @@
-//document.body.style.border = "5px solid red";
+document.body.style.border = "5px solid red";
 
 let _events = {}
 let _schedules = []
@@ -8,30 +8,16 @@ var settings = propertiesConfig.reduce((obj, prop)=>{
     return obj;
 }, {})
 
-/**
- * @param {MutationRecord[]} mutationRecords
-*/
-function callback(mutationRecords) {
-    const result = mutationRecords.find(record => {
-        return record.addedNodes?.length
-            && record.addedNodes[0].className.includes('popup2_visible_yes')
-            && record.addedNodes[0].getElementsByClassName('qa-EventFormPreview').length
-    })
-    if (result) {
-        console.log(settings)
-        new Popup(result.addedNodes[0], settings).doTheStuff();
-    }
 
-    // TODO clean up?
-}
 
-browser.storage.sync.get(null).then(flatSettings => {
+readSettings().then(flatSettings => {
     if  (flatSettings.currency) {
         settings = flatSettings
     }
-    // console.log(settings)
-    new MutationObserver(callback).observe(document.documentElement, {subtree: true, childList: true})
+    watchCalendarPage(settings)
 });
+
+
 
 browser.storage.local.remove('schedule')
 browser.storage.local.remove('events')

@@ -1,3 +1,7 @@
+/**
+ * Modifies
+ */
+
 class Popup {
     constructor(root, settings) {
         this.root = root
@@ -8,14 +12,14 @@ class Popup {
     __findParticipants() {
         this.participants = []
         const nodeList = this.root.querySelectorAll('a[href^="https://staff.yandex-team"]')
-        nodeList.forEach(node=>{
+        nodeList.forEach(node => {
             const parsed = /^.*yandex-team\.ru\/(.+)$/.exec(node.href)
-            
+
             // exclude the meeting room
             if (!parsed || parsed[1].indexOf('map/') === 0) {
                 return;
             }
-            
+
             this.participants.push({
                 node: node,
                 login: parsed[1],
@@ -54,25 +58,31 @@ class Popup {
 
     /** @param {number} cost */
     __getCurrencyWord(cost) {
-        let correctForm
-        switch(`${cost}`.substr(-1)) {
-            case '1':
-                correctForm = this.settings.currency_form_1
-                break
-            case '2':
-            case '3':
-            case '4':
-                correctForm = this.settings.currency_form_2
-                break
-            default:
-                correctForm = this.settings.currency_form_3
+        const lastChars = `${cost}`.substr(-2);
+
+        let correctForm;
+        if (lastChars.length > 1 && lastChars.charAt(0) == 1) {
+            correctForm == this.settings.currency_form_3;
+        } else {
+            switch (lastChars.substr(-1)) {
+                case '1':
+                    correctForm = this.settings.currency_form_1
+                    break
+                case '2':
+                case '3':
+                case '4':
+                    correctForm = this.settings.currency_form_2
+                    break
+                default:
+                    correctForm = this.settings.currency_form_3
+            }
         }
         return correctForm || this.settings.currency
     }
 
     /** @param {Node} node clone of the bottom line */
     __enrichNode(node) {
-        node.classList.remove(node.classList[node.classList.length-1])
+        node.classList.remove(node.classList[node.classList.length - 1])
         node.childNodes[0].textContent = settings.costLabel
 
         node.childNodes[1].textContent = this.__writeCost()
@@ -84,9 +94,9 @@ class Popup {
     showCost() {
         /** @const {Node} */
         try {
-          const lastRow = this.root.querySelector('div[class^=EventFormField__wrap]:last-of-type')
-          const cloned = this.__enrichNode(lastRow.cloneNode(true, true))
-          lastRow.parentNode.append(cloned)
+            const lastRow = this.root.querySelector('div[class^=EventFormField__wrap]:last-of-type')
+            const cloned = this.__enrichNode(lastRow.cloneNode(true, true))
+            lastRow.parentNode.append(cloned)
         } catch (e) {
             console.log('Error showing the cost:', e)
         }
@@ -105,6 +115,6 @@ class Popup {
 function findActivePopup() {
     const popups = document.getElementsByClassName('popup2_visible_yes')
     if (popups.length)
-      return new Popup(popups[0])
+        return new Popup(popups[0])
 }
 /**/
