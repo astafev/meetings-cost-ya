@@ -60,8 +60,8 @@ class Popup {
         const lastChars = `${cost}`.substr(-2);
 
         let correctForm;
-        if (lastChars.length > 1 && lastChars.charAt(0) == 1) {
-            correctForm == this.settings.currency_form_3;
+        if (lastChars.length > 1 && lastChars.charAt(0) === '1') {
+            correctForm = this.settings.currency_form_3;
         } else {
             switch (lastChars.substr(-1)) {
                 case '1':
