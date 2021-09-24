@@ -13,7 +13,8 @@
         "storage",
         "webRequest",
         "webRequestBlocking",
-        "https://calendar.yandex-team.ru/*"
+        "https://calendar.yandex-team.ru/*",
+        "https://easymeeting.yandex-team.ru/v2/*"
     ],
     "background": {
         "scripts": [
