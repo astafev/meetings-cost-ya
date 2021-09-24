@@ -26,6 +26,7 @@
                 resolve(document.querySelector('[class^=Spaceship__content--]'));
             }
         }
+
         check();
     });
 
@@ -82,11 +83,20 @@
                 const { roomName, eventNodes } = parseRow(row);
                 const roomEvents = getEventsForRoom(roomName);
 
-                roomEvents.events.forEach((event, eventIdx) => {
+                easymeeting().checkEvents(roomEvents.events).forEach((promise, idx) => {
+                    promise.then(value => {
+                        if (value <= 0) {
+                            markAsPossibility(eventNodes[idx])
+                        }
+                        console.log(idx, value)
+                    })
+                })
+                // TODO import easymeeting and start testing fetch API
+                /*roomEvents.events.forEach((event, eventIdx) => {
                     if (!eventWillHappen(event.eventId)) {
                         markAsPossibility(eventNodes[eventIdx])
                     }
-                })
+                })*/
             } catch (e) {
                 console.log(`Error processing line ${idx + 1}`, e)
             }

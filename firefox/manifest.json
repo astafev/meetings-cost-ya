@@ -16,7 +16,10 @@
         "https://calendar.yandex-team.ru/*"
     ],
     "background": {
-        "scripts": ["rooms/background.js"]
+        "scripts": [
+            "rooms/background.js",
+            "rooms/easymeeting-service.js"
+        ]
     },
     "browser_specific_settings": {
         "gecko": {
@@ -36,6 +39,7 @@
                 "calendar/watch.js",
 
                 "rooms/parse-html.js",
+                "rooms/easymeeting-service.js",
 
                 "main.js"
             ]
