@@ -9,9 +9,16 @@ class Popup {
     }
 
     __findParticipants() {
-        this.participants = []
-        const nodeList = this.root.querySelectorAll('a[href^="https://staff.yandex-team"]')
-        nodeList.forEach(node => {
+        /**
+         * @param {Node} node 
+         */
+        function checkIfComes(node) {
+            console.log(node)
+            // #accept, #question are other options
+            return node.querySelector('use')?.attributes['xlink:href']?.value !== '#busy'
+        }
+
+        function checkNode(node) {
             const parsed = /^.*yandex-team\.ru\/(.+)$/.exec(node.href)
 
             // exclude the meeting room
@@ -19,12 +26,45 @@ class Popup {
                 return;
             }
 
-            this.participants.push({
-                node: node,
-                login: parsed[1],
-                // TODO parse status (accepeted/rejected)
-            })
+            if (!checkIfComes(node)) {
+                return;
+            }
+
+            return parsed[1];
+        }
+
+        this.participants = []
+        const nodeList = this.root.querySelectorAll('a[href^="https://staff.yandex-team"]')
+        nodeList.forEach(node => {
+            const login = checkNode(node)
+            if (login)
+                this.participants.push({
+                    node,
+                    login,
+                })
         })
+
+        /*this.root.querySelectorAll('div[class^="YabbleList__item"]>a')
+            .filter(node => !nodeList.includes(node))
+            .forEach(checkNode)
+            */
+
+        // extend list of participants
+        const extendNode = this.root.querySelectorAll('.qa-MembersField-MembersListToggler')[0]
+        if (extendNode) {
+            const text = /\d+/.exec(extendNode.textContent)
+            if (text) {
+                const numberOfHiddenMembers = Number.parseInt(text)
+
+                for (let i = 0; i < numberOfHiddenMembers; i++) {
+                    this.participants.push({
+                        node: extendNode,
+                        login: `${i}`
+                    })
+                    console.log(this.participants.length)
+                }
+            }
+        }
     }
 
     init() {
@@ -101,7 +141,7 @@ class Popup {
         }
     }
 
-    doTheStuff() {
+    improve() {
         this.init()
         if (this.__getNumOfParticipants()) {
             this.showCost()
@@ -110,10 +150,3 @@ class Popup {
         }
     }
 }
-
-function findActivePopup() {
-    const popups = document.getElementsByClassName('popup2_visible_yes')
-    if (popups.length)
-        return new Popup(popups[0])
-}
-/**/

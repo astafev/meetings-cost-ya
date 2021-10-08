@@ -9,7 +9,11 @@ const watchCalendarPage = (settings) => {
                 && record.addedNodes[0].getElementsByClassName('qa-EventFormPreview').length
         })
         if (result) {
-            new Popup(result.addedNodes[0], settings).doTheStuff();
+            // sometimes a long list of participants gets somehow updated when the node already exists
+            setTimeout(
+                () => new Popup(result.addedNodes[0], settings).improve(),
+                250
+            )
         }
 
     }
