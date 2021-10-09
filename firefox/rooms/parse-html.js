@@ -112,9 +112,4 @@
         eventNode.style.background = '#88ffde';
     }
 
-    function eventWillHappen(eventId) {
-        // TODO
-        return eventId % 3 !== 0;
-    }
-
 })()

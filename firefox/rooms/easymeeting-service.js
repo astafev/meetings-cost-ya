@@ -36,7 +36,7 @@ const easymeeting = function easymeeting(officeId = 3, tzOffset = "18000000", ba
         const finalMap = {}
 
 
-        response.offices
+        response?.offices
             .forEach(
                 office => office.combinations.forEach(
                     combination => combination.slots.forEach(
@@ -94,7 +94,19 @@ const easymeeting = function easymeeting(officeId = 3, tzOffset = "18000000", ba
         if (response?.status !== 200) {
             throw new Error(`Can't request easymeeting. Can't help with finding an empty room... See the network tab for debugging.`)
         }
-        console.log(response)
+        const reader = response.body.getReader()
+
+        let content = "";
+        return reader.read()
+            .then(function processResponse({ done, value }) {
+                if (value)
+                    content += new TextDecoder().decode(value)
+                if (done) {
+                    return JSON.parse(content)
+                } else {
+                    return reader.read().then(processResponse)
+                }
+            })
     }
 
 
@@ -111,8 +123,8 @@ const easymeeting = function easymeeting(officeId = 3, tzOffset = "18000000", ba
             return []
         },
 
-        initForADay() {
-            combinations(new Date())
+        initForADay(date = new Date()) {
+            combinations(date)
                 .then(parseResponse)
                 .then(map => {
                     for (let eventId in map) {
@@ -127,7 +139,7 @@ const easymeeting = function easymeeting(officeId = 3, tzOffset = "18000000", ba
                     }
 
                     for (let eventId in result[eventId]) {
-                        
+
                     }
                 })
         },
