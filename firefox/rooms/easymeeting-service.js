@@ -42,7 +42,7 @@ const easymeeting = function easymeeting(officeId = 3, tzOffset = "18000000", ba
                     combination => combination.slots.forEach(
                         slot => {
                             if (slot.eventId)
-                                finalMap[eventId] = slot['tip']
+                                finalMap[slot.eventId] = slot['tip']
                         })
                 ))
 
@@ -116,31 +116,26 @@ const easymeeting = function easymeeting(officeId = 3, tzOffset = "18000000", ba
          * @returns {Promise<number>[]}
          */
         checkEvents(events) {
-            //console.log(events)
-            if (events.length) {
-                //console.log(combinations())
-            }
-            return []
+            return events.map(event => {
+                return result[event.eventId]
+            })
         },
 
         initForADay(date = new Date()) {
-            combinations(date)
+            return combinations(date)
                 .then(parseResponse)
                 .then(map => {
                     for (let eventId in map) {
                         const success = map[eventId] === 'unavailableAll'
                         if (result[eventId]) {
-                            if (success) result[eventId].resolve(eventId)
-                            else result[eventId].reject(eventId)
+                            if (success) result[eventId].resolve(true)
+                            else result[eventId].resolve(false)
                         } else {
-                            if (success) result[eventId] = Promise.resolve(eventId)
-                            else result[eventId] = Promise.reject(eventId)
+                            if (success) result[eventId] = Promise.resolve(true)
+                            else result[eventId] = Promise.resolve(false)
                         }
                     }
-
-                    for (let eventId in result[eventId]) {
-
-                    }
+                    return this;
                 })
         },
     }

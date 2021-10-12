@@ -10,7 +10,6 @@ function logResponse(details) {
     if (model && model.name === 'get-resources-schedule' && model.status === 'ok') {
       console.log(model.data)
       browser.storage.local.set({ "schedule": model.data })
-      easymeeting().initForADay()
     }
   }
 

@@ -41,11 +41,22 @@
 
     Promise.all([pageReadyPromise, requestCaughtPromise]).then(([container, schedules]) => {
         console.log('PAGE IS READY', container, schedules)
-        parsePage(container, schedules)
+        return processPage(container, schedules)
     })
 
+    function getEasyMeeting() {
+        let date = new Date();
+        if (document.URL.includes('show_date=')) {
+            const parsed = /show_date=(\d{4}-\d{2}-\d{2})/.exec(document.URL)
+            if (parsed)
+                date = new Date(parsed[1])
+        }
 
-    function parsePage(container, schedules) {
+        return easymeeting().initForADay(date);
+    }
+
+
+    async function processPage(container, schedules) {
 
         /**
          * @param {string} roomName
@@ -75,6 +86,8 @@
             return {};
         }
 
+        const easymeet = await getEasyMeeting();
+
         const rows = container.queryByClassAll('SpaceshipResources__resource');
 
 
@@ -83,12 +96,11 @@
                 const { roomName, eventNodes } = parseRow(row);
                 const roomEvents = getEventsForRoom(roomName);
 
-                easymeeting().checkEvents(roomEvents.events).forEach((promise, idx) => {
-                    promise.then(value => {
-                        if (value <= 0) {
+                easymeet.checkEvents(roomEvents.events).forEach((promise, idx) => {
+                    promise?.then(value => {
+                        if (value === true) {
                             markAsPossibility(eventNodes[idx])
                         }
-                        console.log(idx, value)
                     })
                 })
                 // TODO import easymeeting and start testing fetch API
