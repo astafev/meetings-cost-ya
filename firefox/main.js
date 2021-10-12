@@ -1,4 +1,4 @@
-document.body.style.border = "5px solid red";
+//document.body.style.border = "5px solid red";
 
 let _events = {}
 let _schedules = []
